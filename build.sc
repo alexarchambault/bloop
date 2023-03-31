@@ -206,6 +206,10 @@ class Backend(val crossScalaVersion: String) extends BloopCrossSbtModule with Pu
   }
   def generatedSources = super.generatedSources() ++ Seq(buildInfoFile())
 
+  def extraPublish = super.extraPublish() ++ Seq(
+    PublishInfo(file = test.jar(), classifier = Some("tests"), ivyConfig = "test")
+  )
+
   object test extends Tests {
     def ivyDeps = super.ivyDeps() ++ Agg(
       Dependencies.junit,
@@ -273,6 +277,10 @@ class Frontend(val crossScalaVersion: String) extends BloopCrossSbtModule with P
   )
 
   def forkArgs = super.forkArgs() ++ extraJvmArgs
+
+  def extraPublish = super.extraPublish() ++ Seq(
+    PublishInfo(file = test.jar(), classifier = Some("tests"), ivyConfig = "test")
+  )
 
   // TODO Publish test artifact too
 
